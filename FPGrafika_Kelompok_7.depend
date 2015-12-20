@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1450541293 source:c:\users\riomabox w\documents\github\last_grafika\main.cpp
+	<windows.h>
+	<fstream>
+	<gl/gl.h>
+	<gl/glut.h>
+	<iostream>
+
