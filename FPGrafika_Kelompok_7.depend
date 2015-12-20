@@ -6,3 +6,10 @@
 	<gl/glut.h>
 	<iostream>
 
+1450577278 source:c:\users\riomabox w\documents\github\last_grafika\imageloader.cpp
+	<assert.h>
+	<fstream>
+	"imageloader.h"
+
+1450578529 c:\users\riomabox w\documents\github\last_grafika\imageloader.h
+

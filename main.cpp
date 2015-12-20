@@ -15,6 +15,15 @@ void handleResize(int w, int h) {
 	gluPerspective(45.0, (float)w / (float)h, 1.0, 200.0);
 }
 
+void initRendering() {
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
+	glEnable(GL_NORMALIZE);
+	glEnable(GL_COLOR_MATERIAL);
+	glEnable(GL_TEXTURE_2D);
+}
+
 void myinit(void){
     glClearColor(0,0,0,0);
     glViewport(0,0,640,480);
@@ -105,6 +114,7 @@ int main(int argc, char **argv) {
 	glutInitWindowSize(640,480);
 	glutInitWindowPosition(10, 10);
 	glutCreateWindow("FP_Grafkom");
+	initRendering();
 	myinit();
 	glutDisplayFunc(display);
 	glutReshapeFunc(handleResize);
