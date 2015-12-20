@@ -10,6 +10,13 @@ GLuint _roof;
 GLuint _door;
 static double angle=0;
 
+int depth;
+int posisi = 0;
+float langkah = 1.0;
+float x = 7.5;
+float y = 0.0;
+float z = 0.0;
+
 void handleResize(int w, int h) {
 	glViewport(0, 0, w, h);
 	glMatrixMode(GL_PROJECTION);
@@ -59,6 +66,7 @@ void initRendering() {
 void myinit(void){
     glClearColor(0,0,0,0);
     glViewport(0,0,640,480);
+    depth = 1;
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
    // gluPerspective(50.0,640.0/480.0,1.0,30.0);
@@ -74,13 +82,25 @@ void myinit(void){
 }
 
 void display(void){
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    if (depth)
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	else
+		glClear(GL_COLOR_BUFFER_BIT);
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
     glPushMatrix();
-    gluLookAt(7.5, 10.0, -30.0, 7.5, 0.0, 10.0, 0.0, 1.0, 0.0);
-    glTranslatef(7.5,0.0,0.0);
-    glRotatef(angle, 0.0f, 1.0f, 0.0f);
-    angle+=0.05;
+    gluLookAt(7.5, 3.0, -30.0, 7.5, 0.0, 1000.0, 0.0, 1.0, 0.0);
+    //if (posisi == 0)
+        glTranslatef(x,y,z);
+    /*if (posisi == 1)
+        glTranslatef(x+langkah, y, z);
+    if (posisi == 2)
+        glTranslatef(x, y, z+langkah);
+    if (posisi == 3)
+        glTranslatef(x+(-1*langkah), y, z);
+    if (posisi == 4)
+        glTranslatef(x, y, z+(-1*langkah));*/
+    //glRotatef(angle, 0.0f, 1.0f, 0.0f);
+    //angle+=0.05;
     //set gambar
     glBindTexture(GL_TEXTURE_2D, _wall);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -181,6 +201,64 @@ void display(void){
 	glutSwapBuffers();
 	glutPostRedisplay();
 }
+
+void keyboard(unsigned char key, int x, int y)
+{
+	/* Petunjuk navigasi cursor:
+
+	  "a": Bergerak ke kiri
+	  "d": Bergerak ke kanan
+	  "w": Bergerak maju
+	  "s": Bergerak mundur
+	  "t": Mengatur keberadaan kedalaman
+
+	*/
+	switch (key)
+	{
+	case 'a':
+	case 'A':
+		glTranslatef(langkah, 0.0, 0.0);
+		posisi = 1;
+		break;
+	case 'd':
+	case 'D':
+		glTranslatef((-1*langkah), 0.0, 0.0);
+		posisi = 3;
+		break;
+	case 'w':
+	case 'W':
+		glTranslatef(0.0, 0.0, langkah);
+		posisi = 2;
+		break;
+	case 's':
+	case 'S':
+		glTranslatef(0.0, 0.0, (-1*langkah));
+		posisi = 4;
+		break;
+	case 'j':
+	case 'J':
+        glRotatef(-1.0, 0.0f, 1.0f, 0.0f);
+		break;
+	case 'l':
+	case 'L':
+        glRotatef(1.0, 0.0f, 1.0f, 0.0f);
+		break;
+	case 't':
+	case 'T':
+		if (depth)
+		{
+			depth = 0;
+			glDisable(GL_DEPTH_TEST);
+		}
+		else
+		{
+			depth = 1;
+			glEnable(GL_DEPTH_TEST);
+		}
+	}
+	display();
+}
+
 int main(int argc, char **argv) {
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
@@ -190,6 +268,7 @@ int main(int argc, char **argv) {
 	initRendering();
 	myinit();
 	glutDisplayFunc(display);
+    glutKeyboardFunc(keyboard);
 	glutReshapeFunc(handleResize);
 	glutMainLoop();
 
