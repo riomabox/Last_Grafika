@@ -3,9 +3,9 @@
 #include <gl/gl.h>
 #include <gl/glut.h>
 #include <iostream>
-
+#include "imageloader.h"
 using namespace std;
-
+GLuint _wall;
 static double angle=0;
 
 void handleResize(int w, int h) {
@@ -15,6 +15,23 @@ void handleResize(int w, int h) {
 	gluPerspective(45.0, (float)w / (float)h, 1.0, 200.0);
 }
 
+//cara load texture
+GLuint loadTexture(Image* image) {
+	GLuint textureId;
+	glGenTextures(1, &textureId);
+	glBindTexture(GL_TEXTURE_2D, textureId);
+	glTexImage2D(GL_TEXTURE_2D,                //Always GL_TEXTURE_2D
+				 0,                            //0 for now
+				 GL_RGB,                       //Format OpenGL uses for image
+				 image->width, image->height,  //Width and height
+				 0,                            //The border of the image
+				 GL_RGB, //GL_RGB, because pixels are stored in RGB format
+				 GL_UNSIGNED_BYTE, //GL_UNSIGNED_BYTE, because pixels are stored
+				                   //as unsigned numbers
+				 image->pixels);               //The actual pixel data
+	return textureId;
+}
+
 void initRendering() {
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_LIGHTING);
@@ -22,6 +39,11 @@ void initRendering() {
 	glEnable(GL_NORMALIZE);
 	glEnable(GL_COLOR_MATERIAL);
 	glEnable(GL_TEXTURE_2D);
+
+    //dinding
+    Image* image1 = loadBMP("wood_texture_2.bmp");
+    _wall = loadTexture(image1);
+    delete image1;
 }
 
 void myinit(void){
@@ -49,6 +71,16 @@ void display(void){
     glTranslatef(7.5,0.0,0.0);
     glRotatef(angle, 0.0f, 1.0f, 0.0f);
     angle+=0.05;
+    //set gambar
+    glBindTexture(GL_TEXTURE_2D, _wall);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    //depan banget
+    glBegin(GL_QUADS);
+	glTexCoord2f(0.0, 1.0); glVertex3f(2.5f, 0.0f, -5.0f);
+	glTexCoord2f(0.0, 0.0); glVertex3f(7.5f, 0.0f, -5.0f);
+	glTexCoord2f(1.0, 0.0); glVertex3f(7.5f, 7.0f, -5.0f);
+	glTexCoord2f(1.0, 1.0); glVertex3f(2.5f, 7.0f, -5.0f);
+	glEnd();
 
 	//belakang
 	glBegin(GL_QUADS);
