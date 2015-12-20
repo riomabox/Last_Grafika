@@ -6,6 +6,8 @@
 #include "imageloader.h"
 using namespace std;
 GLuint _wall;
+GLuint _roof;
+GLuint _door;
 static double angle=0;
 
 void handleResize(int w, int h) {
@@ -44,6 +46,14 @@ void initRendering() {
     Image* image1 = loadBMP("wood_texture_2.bmp");
     _wall = loadTexture(image1);
     delete image1;
+
+    Image* image2 = loadBMP("roof_texture_1.bmp");
+    _roof = loadTexture(image2);
+    delete image2;
+
+    Image* image3 = loadBMP("door_texture_1.bmp");
+    _door = loadTexture(image3);
+    delete image3;
 }
 
 void myinit(void){
@@ -82,6 +92,35 @@ void display(void){
 	glTexCoord2f(1.0, 1.0); glVertex3f(2.5f, 7.0f, -5.0f);
 	glEnd();
 
+    //set gambar
+    glBindTexture(GL_TEXTURE_2D, _door);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	//pintu
+    glBegin(GL_QUADS);
+	glTexCoord2f(0.0, 1.0); glVertex3f(0.0f, 0.2f, -2.1f);
+	glTexCoord2f(0.0, 0.0); glVertex3f(2.0f, 0.2f, -2.1f);
+	glTexCoord2f(1.0, 0.0); glVertex3f(2.0f, 6.0f, -2.1f);
+	glTexCoord2f(1.0, 1.0); glVertex3f(0.0f, 6.0f, -2.1f);
+	glEnd();
+
+	//depan menjorok
+    glBindTexture(GL_TEXTURE_2D, _wall);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glBegin(GL_QUADS);
+	glTexCoord2f(0.0, 1.0); glVertex3f(-7.5f, 0.0f, -2.0f);
+	glTexCoord2f(0.0, 0.0); glVertex3f(2.5f, 0.0f, -2.0f);
+	glTexCoord2f(1.0, 0.0); glVertex3f(2.5f, 7.0f, -2.0f);
+	glTexCoord2f(1.0, 1.0); glVertex3f( -7.5f, 7.0f, -2.0f);
+	glEnd();
+
+	//penyambung depan banget dan menjorok
+    glBegin(GL_QUADS);
+	glTexCoord2f(0.0, 1.0); glVertex3f(2.5f, 0.0f, -5.0f);
+	glTexCoord2f(0.0, 0.0); glVertex3f(2.5f, 0.0f, -2.0f);
+	glTexCoord2f(1.0, 0.0); glVertex3f(2.5f, 7.0f, -2.0f);
+	glTexCoord2f(1.0, 1.0); glVertex3f(2.5f, 7.0f, -5.0f);
+	glEnd();
+
 	//belakang
 	glBegin(GL_QUADS);
 	glTexCoord2f(0.0, 1.0); glVertex3f(-7.5f, 0.0f, 5.0f);
@@ -111,6 +150,8 @@ void display(void){
 	glTexCoord2f(0.0, 1.0); glVertex3f(-7.5f, 0.0f, 5.0f);
 	glEnd();
 
+    glBindTexture(GL_TEXTURE_2D, _roof);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	//atas depan
     glBegin(GL_TRIANGLES);
 	glTexCoord2f(0.0, 0.0); glVertex3f(-7.5f, 7.0f, -5.0f);

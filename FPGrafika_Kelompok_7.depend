@@ -1,10 +1,11 @@
 # depslib dependency file v1.0
-1450541293 source:c:\users\riomabox w\documents\github\last_grafika\main.cpp
+1450601170 source:c:\users\riomabox w\documents\github\last_grafika\main.cpp
 	<windows.h>
 	<fstream>
 	<gl/gl.h>
 	<gl/glut.h>
 	<iostream>
+	"imageloader.h"
 
 1450577278 source:c:\users\riomabox w\documents\github\last_grafika\imageloader.cpp
 	<assert.h>
