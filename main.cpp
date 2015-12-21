@@ -13,9 +13,9 @@ static double angle=0;
 int depth;
 int posisi = 0;
 float langkah = 1.0;
-float x = 7.5;
-float y = 0.0;
-float z = 0.0;
+float camera_x = 7.5;
+float camera_y = 3.0;
+float camera_z = -30.0;
 
 void handleResize(int w, int h) {
 	glViewport(0, 0, w, h);
@@ -88,17 +88,22 @@ void display(void){
 		glClear(GL_COLOR_BUFFER_BIT);
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
     glPushMatrix();
-    gluLookAt(7.5, 3.0, -30.0, 7.5, 0.0, 1000.0, 0.0, 1.0, 0.0);
     //if (posisi == 0)
-        glTranslatef(x,y,z);
-    /*if (posisi == 1)
-        glTranslatef(x+langkah, y, z);
-    if (posisi == 2)
-        glTranslatef(x, y, z+langkah);
-    if (posisi == 3)
-        glTranslatef(x+(-1*langkah), y, z);
-    if (posisi == 4)
-        glTranslatef(x, y, z+(-1*langkah));*/
+        gluLookAt(camera_x, camera_y, camera_z, 7.5, 0.0, 1000.0, 0.0, 1.0, 0.0);
+        glTranslatef(7.5,0.0,0.0);
+    //if (posisi == 1)
+    //    gluLookAt(camera_x+(-1*langkah), camera_y, camera_z, 7.5, 0.0, 1000.0, 0.0, 1.0, 0.0);
+        //glTranslatef(x+(-1*langkah), y, z);
+    //if (posisi == 2)
+        //camera_z = camera_z + langkah;
+    //    gluLookAt(camera_x, camera_y, camera_z+langkah, 7.5, 0.0, 1000.0, 0.0, 1.0, 0.0);
+        //glTranslatef(x, y, z+(-1*langkah));
+    //if (posisi == 3)
+    //    gluLookAt(camera_x+langkah, camera_y, camera_z, 7.5, 0.0, 1000.0, 0.0, 1.0, 0.0);
+        //glTranslatef(x+langkah, y, z);
+    //if (posisi == 4)
+    //    gluLookAt(camera_x, camera_y, camera_z+(-1*langkah), 7.5, 0.0, 1000.0, 0.0, 1.0, 0.0);
+        //glTranslatef(x, y, z+langkah);
     //glRotatef(angle, 0.0f, 1.0f, 0.0f);
     //angle+=0.05;
     //set gambar
@@ -217,23 +222,27 @@ void keyboard(unsigned char key, int x, int y)
 	{
 	case 'a':
 	case 'A':
-		glTranslatef(langkah, 0.0, 0.0);
-		posisi = 1;
+		//glTranslatef(langkah, 0.0, 0.0);
+		camera_x = camera_x + langkah;
+		//posisi = 1;
 		break;
 	case 'd':
 	case 'D':
-		glTranslatef((-1*langkah), 0.0, 0.0);
-		posisi = 3;
+		//glTranslatef((-1*langkah), 0.0, 0.0);
+		camera_x =  camera_x - langkah;
+		//posisi = 3;
 		break;
 	case 'w':
 	case 'W':
-		glTranslatef(0.0, 0.0, langkah);
-		posisi = 2;
+		//glTranslatef(0.0, 0.0, langkah);
+		camera_z = camera_z + langkah;
+		//posisi = 2;
 		break;
 	case 's':
 	case 'S':
-		glTranslatef(0.0, 0.0, (-1*langkah));
-		posisi = 4;
+		//glTranslatef(0.0, 0.0, (-1*langkah));
+		camera_z =  camera_z - langkah;
+		//posisi = 4;
 		break;
 	case 'j':
 	case 'J':
@@ -267,8 +276,8 @@ int main(int argc, char **argv) {
 	glutCreateWindow("FP_Grafkom");
 	initRendering();
 	myinit();
-	glutDisplayFunc(display);
     glutKeyboardFunc(keyboard);
+	glutDisplayFunc(display);
 	glutReshapeFunc(handleResize);
 	glutMainLoop();
 
