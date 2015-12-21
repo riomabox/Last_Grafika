@@ -88,26 +88,26 @@ motion(int x, int y)
 }
 
 void myinit(void){
-    glClearColor(0,0,0,0);
+
     glViewport(0,0,640,480);
+  glEnable(GL_LIGHTING);
+  glEnable(GL_LIGHT0);
+
+  glDepthFunc(GL_LESS);
+  glEnable(GL_DEPTH_TEST);
     depth = 1;
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-   // gluPerspective(50.0,640.0/480.0,1.0,30.0);
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
     //atur cahaya
-    /*GLfloat ambientLight[] = {0.3f, 0.3f, 0.3f, 1.0f};
+    GLfloat ambientLight[] = {0.3f, 0.3f, 0.3f, 1.0f};
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientLight);
 	GLfloat lightColor[] = {0.7f, 0.7f, 0.7f, 1.0f};
 	GLfloat lightPos[] = {-2 * 10, 10, 4 * 10, 1.0f};
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightColor);
-	glLightfv(GL_LIGHT0, GL_POSITION, lightPos);*/
+	glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
 }
 
 void display(void){
       GLfloat position[] =
-      {0.0, 0.0, 1.5, 1.0};
+      {7.5, 0.0, -1.5, 1.0};
     if (depth)
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	else
@@ -125,9 +125,10 @@ void display(void){
       glutWireCube(0.07);
       glEnable(GL_LIGHTING);
       glEnable(GL_TEXTURE_2D);
+      glColor3f(0.1, 0.1, 0.1);
       glPopMatrix();
 
-    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+    //glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
     glPushMatrix();
     //if (posisi == 0)
         gluLookAt(camera_x, camera_y, camera_z, camera_rotate, camera_angle, 100.0, 0.0, 1.0, 0.0);
