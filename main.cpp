@@ -10,18 +10,26 @@ GLuint _roof;
 GLuint _door;
 static double angle=0;
 
+static int begin;
+static int spin = 180;
+
+#define langkah 1.0
+#define navigasi 10.0
+
 int depth;
 int posisi = 0;
-float langkah = 1.0;
 float camera_x = 7.5;
-float camera_y = 3.0;
+float camera_y = 3.7;
 float camera_z = -30.0;
+float camera_angle = 0.0;
+float camera_rotate = 7.5;
 
 void handleResize(int w, int h) {
 	glViewport(0, 0, w, h);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	gluPerspective(45.0, (float)w / (float)h, 1.0, 200.0);
+	glMatrixMode(GL_MODELVIEW);
 }
 
 //cara load texture
@@ -44,7 +52,7 @@ GLuint loadTexture(Image* image) {
 void initRendering() {
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_LIGHTING);
-	glEnable(GL_LIGHT0);
+	//glEnable(GL_LIGHT0);
 	glEnable(GL_NORMALIZE);
 	glEnable(GL_COLOR_MATERIAL);
 	glEnable(GL_TEXTURE_2D);
@@ -63,6 +71,22 @@ void initRendering() {
     delete image3;
 }
 
+void
+movelight(int button, int state, int x, int y)
+{
+  if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
+    begin = x;
+  }
+}
+
+void
+motion(int x, int y)
+{
+  spin = (spin - (x - begin)) % 360;
+  begin = x;
+  glutPostRedisplay();
+}
+
 void myinit(void){
     glClearColor(0,0,0,0);
     glViewport(0,0,640,480);
@@ -73,23 +97,40 @@ void myinit(void){
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     //atur cahaya
-    GLfloat ambientLight[] = {0.3f, 0.3f, 0.3f, 1.0f};
+    /*GLfloat ambientLight[] = {0.3f, 0.3f, 0.3f, 1.0f};
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientLight);
 	GLfloat lightColor[] = {0.7f, 0.7f, 0.7f, 1.0f};
 	GLfloat lightPos[] = {-2 * 10, 10, 4 * 10, 1.0f};
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, lightColor);
-	glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
+	glLightfv(GL_LIGHT0, GL_POSITION, lightPos);*/
 }
 
 void display(void){
+      GLfloat position[] =
+      {0.0, 0.0, 1.5, 1.0};
     if (depth)
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	else
 		glClear(GL_COLOR_BUFFER_BIT);
+
+      glPushMatrix();
+      glRotated((GLdouble) spin, 0.0, 1.0, 0.0);
+      glRotated(0.0, 1.0, 0.0, 0.0);
+      glLightfv(GL_LIGHT0, GL_POSITION, position);
+
+      glTranslated(0.0, -0.25, 1.5);
+      glDisable(GL_LIGHTING);
+      glDisable(GL_TEXTURE_2D);
+      glColor3f(0.0, 1.0, 1.0);
+      glutWireCube(0.07);
+      glEnable(GL_LIGHTING);
+      glEnable(GL_TEXTURE_2D);
+      glPopMatrix();
+
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
     glPushMatrix();
     //if (posisi == 0)
-        gluLookAt(camera_x, camera_y, camera_z, 7.5, 0.0, 1000.0, 0.0, 1.0, 0.0);
+        gluLookAt(camera_x, camera_y, camera_z, camera_rotate, camera_angle, 100.0, 0.0, 1.0, 0.0);
         glTranslatef(7.5,0.0,0.0);
     //if (posisi == 1)
     //    gluLookAt(camera_x+(-1*langkah), camera_y, camera_z, 7.5, 0.0, 1000.0, 0.0, 1.0, 0.0);
@@ -146,13 +187,6 @@ void display(void){
 	glTexCoord2f(1.0, 1.0); glVertex3f(2.5f, 7.0f, -5.0f);
 	glEnd();
 
-	//belakang
-	glBegin(GL_QUADS);
-	glTexCoord2f(0.0, 1.0); glVertex3f(-7.5f, 0.0f, 5.0f);
-	glTexCoord2f(0.0, 0.0); glVertex3f(7.5f, 0.0f, 5.0f);
-	glTexCoord2f(1.0, 0.0); glVertex3f(7.5f, 7.0f, 5.0f);
-	glTexCoord2f(1.0, 1.0); glVertex3f( -7.5f, 7.0f, 5.0f);
-	glEnd();
     //kanan
     glBegin(GL_QUADS);
 	glTexCoord2f(1.0, 1.0); glVertex3f(7.5f, 0.0f, -5.0f);
@@ -167,6 +201,15 @@ void display(void){
 	glTexCoord2f(1.0, 1.0); glVertex3f(-7.5f, 7.0f, 5.0f);
 	glTexCoord2f(0.0, 1.0); glVertex3f(-7.5f, 0.0f, 5.0f);
 	glEnd();
+
+	//belakang
+	glBegin(GL_QUADS);
+	glTexCoord2f(0.0, 1.0); glVertex3f(-7.5f, 0.0f, 5.0f);
+	glTexCoord2f(0.0, 0.0); glVertex3f(7.5f, 0.0f, 5.0f);
+	glTexCoord2f(1.0, 0.0); glVertex3f(7.5f, 7.0f, 5.0f);
+	glTexCoord2f(1.0, 1.0); glVertex3f( -7.5f, 7.0f, 5.0f);
+	glEnd();
+
 	//bawah
     glBegin(GL_QUADS);
 	glTexCoord2f(0.0, 0.0); glVertex3f(-7.5f, 0.0f, -5.0f);
@@ -244,13 +287,27 @@ void keyboard(unsigned char key, int x, int y)
 		camera_z =  camera_z - langkah;
 		//posisi = 4;
 		break;
+	case 'i':
+	case 'I':
+		//glTranslatef(0.0, 0.0, (-1*langkah));
+		camera_angle =  camera_angle + navigasi;
+		//posisi = 4;
+		break;
+	case 'k':
+	case 'K':
+		//glTranslatef(0.0, 0.0, (-1*langkah));
+		camera_angle =  camera_angle - navigasi;
+		//posisi = 4;
+		break;
 	case 'j':
 	case 'J':
-        glRotatef(-1.0, 0.0f, 1.0f, 0.0f);
+        //glRotatef(-1.0, 0.0f, 1.0f, 0.0f);
+        camera_rotate = camera_rotate + navigasi;
 		break;
 	case 'l':
 	case 'L':
-        glRotatef(1.0, 0.0f, 1.0f, 0.0f);
+        //glRotatef(1.0, 0.0f, 1.0f, 0.0f);
+        camera_rotate = camera_rotate - navigasi;
 		break;
 	case 't':
 	case 'T':
@@ -274,11 +331,13 @@ int main(int argc, char **argv) {
 	glutInitWindowSize(640,480);
 	glutInitWindowPosition(10, 10);
 	glutCreateWindow("FP_Grafkom");
-	initRendering();
 	myinit();
+    glutMouseFunc(movelight);
+    glutMotionFunc(motion);
     glutKeyboardFunc(keyboard);
+    initRendering();
+    glutReshapeFunc(handleResize);
 	glutDisplayFunc(display);
-	glutReshapeFunc(handleResize);
 	glutMainLoop();
 
 	return 0;
