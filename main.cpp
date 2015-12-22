@@ -11,10 +11,11 @@ GLuint _door;
 static double angle=0;
 
 static int begin;
-static int spin = 180;
+static int spin = 90;
 
 #define langkah 1.0
 #define navigasi 10.0
+#define spot 5.0
 
 int depth;
 int posisi = 0;
@@ -23,6 +24,7 @@ float camera_y = 3.7;
 float camera_z = -30.0;
 float camera_angle = 0.0;
 float camera_rotate = 7.5;
+float flashlight = 7.5;
 
 void handleResize(int w, int h) {
 	glViewport(0, 0, w, h);
@@ -107,7 +109,9 @@ void myinit(void){
 
 void display(void){
       GLfloat position[] =
-      {7.5, 0.0, -1.5, 1.0};
+      //{7.5, 0.0, -50.5, 1.0};
+      //{flashlight, 0.0, -100.5, 0.0};
+      {flashlight, 0.0, -100.5, 0.0};
     if (depth)
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	else
@@ -125,7 +129,7 @@ void display(void){
       glutWireCube(0.07);
       glEnable(GL_LIGHTING);
       glEnable(GL_TEXTURE_2D);
-      glColor3f(0.1, 0.1, 0.1);
+      glColor3f(1.0, 1.0, 1.0);
       glPopMatrix();
 
     //glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
@@ -304,11 +308,13 @@ void keyboard(unsigned char key, int x, int y)
 	case 'J':
         //glRotatef(-1.0, 0.0f, 1.0f, 0.0f);
         camera_rotate = camera_rotate + navigasi;
+        flashlight = flashlight + spot;
 		break;
 	case 'l':
 	case 'L':
         //glRotatef(1.0, 0.0f, 1.0f, 0.0f);
         camera_rotate = camera_rotate - navigasi;
+        flashlight = flashlight - spot;
 		break;
 	case 't':
 	case 'T':
