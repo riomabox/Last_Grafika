@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1450754361 source:c:\users\riomabox w\documents\github\last_grafika\main.cpp
+1451998665 source:c:\users\riomabox w\documents\github\last_grafika\main.cpp
 	<windows.h>
 	<fstream>
 	<gl/gl.h>

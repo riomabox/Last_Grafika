@@ -8,6 +8,10 @@ using namespace std;
 GLuint _wall;
 GLuint _roof;
 GLuint _door;
+GLuint _small_gate;
+GLuint _picture1;
+GLuint _window1;
+GLuint _floor1;
 static double angle=0;
 
 static int begin;
@@ -63,14 +67,30 @@ void initRendering() {
     Image* image1 = loadBMP("wood_texture_2.bmp");
     _wall = loadTexture(image1);
     delete image1;
-
+    //roof
     Image* image2 = loadBMP("roof_texture_1.bmp");
     _roof = loadTexture(image2);
     delete image2;
-
+    //pintu
     Image* image3 = loadBMP("door_texture_1.bmp");
     _door = loadTexture(image3);
     delete image3;
+    //pagar kecil
+    Image* image4 = loadBMP("wood_texture_3.bmp");
+    _small_gate = loadTexture(image4);
+    delete image4;
+    //lukisan
+    Image* image5 = loadBMP("picture_texture_1.bmp");
+    _picture1 = loadTexture(image5);
+    delete image5;
+    //cendela
+    Image* image6 = loadBMP("window_texture_1.bmp");
+    _window1 = loadTexture(image6);
+    delete image6;
+    //lantai
+    Image* image7 = loadBMP("wood_texture_1.bmp");
+    _floor1 = loadTexture(image7);
+    delete image7;
 }
 
 void
@@ -192,6 +212,104 @@ void display(void){
 	glTexCoord2f(1.0, 1.0); glVertex3f(2.5f, 7.0f, -5.0f);
 	glEnd();
 
+	//pagar kecil bagian batangan
+    glBindTexture(GL_TEXTURE_2D, _small_gate);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glBegin(GL_QUADS);
+    double simpan = -7.0;
+    for(int a=0;a<15;a++)
+    {
+        if(a%2==0)
+        {
+        glTexCoord2f(0.0, 1.0); glVertex3f(simpan-0.2, 0.0f, -5.0f);
+        glTexCoord2f(0.0, 0.0); glVertex3f(simpan, 0.0f, -5.0f);
+        glTexCoord2f(1.0, 0.0); glVertex3f(simpan, 2.0f, -5.0f);
+        glTexCoord2f(1.0, 1.0); glVertex3f(simpan-0.2, 2.0f, -5.0f);
+        }
+        simpan += 0.5;
+    }
+    simpan = -7.0;
+    for(int a=0;a<15;a++)
+    {
+        if(a%2==0)
+        {
+        glTexCoord2f(0.0, 1.0); glVertex3f(simpan-0.2, 0.0f, -4.7f);
+        glTexCoord2f(0.0, 0.0); glVertex3f(simpan, 0.0f, -4.7f);
+        glTexCoord2f(1.0, 0.0); glVertex3f(simpan, 2.0f, -4.7f);
+        glTexCoord2f(1.0, 1.0); glVertex3f(simpan-0.2, 2.0f, -4.7f);
+        }
+        simpan += 0.5;
+    }
+    simpan = -7.0;
+    for(int a=0;a<15;a++)
+    {
+        if(a%2==0)
+        {
+        glTexCoord2f(0.0, 1.0); glVertex3f(simpan, 0.0f, -5.0f);
+        glTexCoord2f(0.0, 0.0); glVertex3f(simpan, 0.0f, -4.7f);
+        glTexCoord2f(1.0, 0.0); glVertex3f(simpan, 2.0f, -4.7f);
+        glTexCoord2f(1.0, 1.0); glVertex3f(simpan, 2.0f, -5.0f);
+        }
+        simpan += 0.5;
+    }
+    simpan = -7.0;
+    for(int a=0;a<15;a++)
+    {
+        if(a%2==0)
+        {
+        glTexCoord2f(0.0, 1.0); glVertex3f(simpan-0.2, 0.0f, -5.0f);
+        glTexCoord2f(0.0, 0.0); glVertex3f(simpan-0.2, 0.0f, -4.7f);
+        glTexCoord2f(1.0, 0.0); glVertex3f(simpan-0.2, 2.0f, -4.7f);
+        glTexCoord2f(1.0, 1.0); glVertex3f(simpan-0.2, 2.0f, -5.0f);
+        }
+        simpan += 0.5;
+    }
+	glEnd();
+	//pagar kecil bagian batangan
+    glBegin(GL_QUADS);
+    //atas
+    glTexCoord2f(0.0, 1.0); glVertex3f(-7.3, 2.2f, -5.0f);
+    glTexCoord2f(0.0, 0.0); glVertex3f(simpan-0.5, 2.2f, -5.0f);
+    glTexCoord2f(1.0, 0.0); glVertex3f(simpan-0.5, 2.2f, -4.7f);
+    glTexCoord2f(1.0, 1.0); glVertex3f(-7.3, 2.2f, -4.7f);
+    //bawah
+    glTexCoord2f(0.0, 1.0); glVertex3f(-7.3, 2.0f, -5.0f);
+    glTexCoord2f(0.0, 0.0); glVertex3f(simpan-0.5, 2.0f, -5.0f);
+    glTexCoord2f(1.0, 0.0); glVertex3f(simpan-0.5, 2.0f, -4.7f);
+    glTexCoord2f(1.0, 1.0); glVertex3f(-7.3, 2.0f, -4.7f);
+    //depan
+    glTexCoord2f(0.0, 1.0); glVertex3f(-7.3, 2.0f, -5.0f);
+    glTexCoord2f(0.0, 0.0); glVertex3f(simpan-0.5, 2.0f, -5.0f);
+    glTexCoord2f(1.0, 0.0); glVertex3f(simpan-0.5, 2.2f, -5.0f);
+    glTexCoord2f(1.0, 1.0); glVertex3f(-7.3, 2.2f, -5.0f);
+	//belakang
+    glTexCoord2f(0.0, 1.0); glVertex3f(-7.3, 2.0f, -4.7f);
+    glTexCoord2f(0.0, 0.0); glVertex3f(simpan-0.5, 2.0f, -4.7f);
+    glTexCoord2f(1.0, 0.0); glVertex3f(simpan-0.5, 2.2f, -4.7f);
+    glTexCoord2f(1.0, 1.0); glVertex3f(-7.3, 2.2f, -4.7f);
+	glEnd();
+
+    //lukisan
+    glBindTexture(GL_TEXTURE_2D, _picture1);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glBegin(GL_QUADS);
+	glTexCoord2f(0.0, 1.0); glVertex3f(-7.2f, 3.0f, -4.5f);
+	glTexCoord2f(1.0, 0.0); glVertex3f(-7.2f, 5.0f, -4.5f);
+	glTexCoord2f(1.0, 1.0); glVertex3f(-7.2f, 5.0f, -3.0f);
+	glTexCoord2f(0.0, 0.0); glVertex3f(-7.2f, 3.0f, -3.0f);
+	glEnd();
+	//cendela menjorok
+    glBindTexture(GL_TEXTURE_2D, _window1);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glBegin(GL_QUADS);
+	glTexCoord2f(1.0, 1.0); glVertex3f(-6.5f, 2.0f, -2.1f);
+	glTexCoord2f(0.0, 1.0); glVertex3f(-2.5f, 2.0f, -2.1f);
+	glTexCoord2f(0.0, 0.0); glVertex3f(-2.5f, 5.0f, -2.1f);
+	glTexCoord2f(1.0, 0.0); glVertex3f( -6.5f, 5.0f, -2.1f);
+	glEnd();
+
+    glBindTexture(GL_TEXTURE_2D, _wall);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     //kanan
     glBegin(GL_QUADS);
 	glTexCoord2f(1.0, 1.0); glVertex3f(7.5f, 0.0f, -5.0f);
@@ -201,10 +319,24 @@ void display(void){
 	glEnd();
 	//kiri
 	glBegin(GL_QUADS);
+	glTexCoord2f(0.0, 0.0); glVertex3f(-7.3f, 0.0f, -5.0f);
+	glTexCoord2f(1.0, 0.0); glVertex3f(-7.3f, 7.0f, -5.0f);
+	glTexCoord2f(1.0, 1.0); glVertex3f(-7.3f, 7.0f, 5.0f);
+	glTexCoord2f(0.0, 1.0); glVertex3f(-7.3f, 0.0f, 5.0f);
+	glEnd();
+
+    glBegin(GL_QUADS);
 	glTexCoord2f(0.0, 0.0); glVertex3f(-7.5f, 0.0f, -5.0f);
 	glTexCoord2f(1.0, 0.0); glVertex3f(-7.5f, 7.0f, -5.0f);
 	glTexCoord2f(1.0, 1.0); glVertex3f(-7.5f, 7.0f, 5.0f);
 	glTexCoord2f(0.0, 1.0); glVertex3f(-7.5f, 0.0f, 5.0f);
+	glEnd();
+
+    glBegin(GL_QUADS);
+	glTexCoord2f(0.0, 1.0); glVertex3f(-7.5f, 0.0f, -5.0f);
+	glTexCoord2f(0.0, 0.0); glVertex3f(-7.3f, 0.0f, -5.0f);
+	glTexCoord2f(1.0, 0.0); glVertex3f(-7.3f, 7.0f, -5.0f);
+	glTexCoord2f(1.0, 1.0); glVertex3f( -7.5f, 7.0f, -5.0f);
 	glEnd();
 
 	//belakang
@@ -213,14 +345,6 @@ void display(void){
 	glTexCoord2f(0.0, 0.0); glVertex3f(7.5f, 0.0f, 5.0f);
 	glTexCoord2f(1.0, 0.0); glVertex3f(7.5f, 7.0f, 5.0f);
 	glTexCoord2f(1.0, 1.0); glVertex3f( -7.5f, 7.0f, 5.0f);
-	glEnd();
-
-	//bawah
-    glBegin(GL_QUADS);
-	glTexCoord2f(0.0, 0.0); glVertex3f(-7.5f, 0.0f, -5.0f);
-	glTexCoord2f(1.0, 0.0); glVertex3f(7.5f, 0.0f, -5.0f);
-	glTexCoord2f(1.0, 1.0); glVertex3f(7.5f, 0.0f, 5.0f);
-	glTexCoord2f(0.0, 1.0); glVertex3f(-7.5f, 0.0f, 5.0f);
 	glEnd();
 
     glBindTexture(GL_TEXTURE_2D, _roof);
@@ -248,6 +372,47 @@ void display(void){
 	glTexCoord2f(0.0, 0.0); glVertex3f(7.5f, 7.0f, -5.0f);
 	glTexCoord2f(2.0, 0.0); glVertex3f(7.5f, 7.0f, 5.0f);
 	glTexCoord2f(1.0, 1.0); glVertex3f(0.0f, 10.0f, 0.0f);
+    glEnd();
+    glBindTexture(GL_TEXTURE_2D, _floor1);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    //bawah
+    glBegin(GL_QUADS);
+	glTexCoord2f(0.0, 0.0); glVertex3f(-7.5f, 0.0f, -5.0f);
+	glTexCoord2f(1.0, 0.0); glVertex3f(7.5f, 0.0f, -5.0f);
+	glTexCoord2f(1.0, 1.0); glVertex3f(7.5f, 0.0f, 5.0f);
+	glTexCoord2f(0.0, 1.0); glVertex3f(-7.5f, 0.0f, 5.0f);
+	glEnd();
+    //sebagai pondasi
+    glBindTexture(GL_TEXTURE_2D, _wall);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	//kiri pondasi
+	glBegin(GL_QUADS);
+	glTexCoord2f(0.0, 0.0); glVertex3f(-7.5f, -0.5f, -5.0f);
+	glTexCoord2f(1.0, 0.0); glVertex3f(-7.5f, 0.0f, -5.0f);
+	glTexCoord2f(1.0, 1.0); glVertex3f(-7.5f, 0.0f, 5.0f);
+	glTexCoord2f(0.0, 1.0); glVertex3f(-7.5f, -0.5f, 5.0f);
+	glEnd();
+    //kanan pondasi
+    glBegin(GL_QUADS);
+    glTexCoord2f(0.0, 0.0); glVertex3f(7.5f, 0.0f, 5.0f);
+    glTexCoord2f(1.0, 0.0); glVertex3f(7.5f, -0.5f, 5.0f);
+	glTexCoord2f(1.0, 1.0); glVertex3f(7.5f, -0.5f, -5.0f);
+	glTexCoord2f(0.0, 1.0); glVertex3f(7.5f, 0.0f, -5.0f);
+	glEnd();
+	//depan pondasi
+    //glColor3d(1,0,0);
+    glBegin(GL_QUADS);
+	glTexCoord2f(0.0, 1.0); glVertex3f(-7.5f, 0.0f, -5.0f);
+	glTexCoord2f(0.0, 0.0); glVertex3f(7.5f, 0.0f, -5.0f);
+	glTexCoord2f(1.0, 0.0); glVertex3f(7.5f, -0.5f, -5.0f);
+	glTexCoord2f(1.0, 1.0); glVertex3f(-7.5f, -0.5f, -5.0f);
+	glEnd();
+	//belakang pondasi
+	glBegin(GL_QUADS);
+	glTexCoord2f(0.0, 1.0); glVertex3f(-7.5f, -0.5f, 5.0f);
+	glTexCoord2f(0.0, 0.0); glVertex3f(7.5f, -0.5f, 5.0f);
+	glTexCoord2f(1.0, 0.0); glVertex3f(7.5f, 0.0f, 5.0f);
+	glTexCoord2f(1.0, 1.0); glVertex3f(-7.5f, 0.0f, 5.0f);
 	glEnd();
 	glFlush();
 	glPopMatrix();
